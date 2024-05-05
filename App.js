@@ -8,24 +8,24 @@ import { Audio } from "expo-av";
 import { BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome6 } from '@expo/vector-icons';
-import styles from './styles/style'; // Import styles from styles.js
+import styles from './styles/style'; 
 
 export default function App() {
   const [running, setRunning] = useState(false);
   const [gameEngine, setGameEngine] = useState(null);
   const [currentPoints, setCurrentPoints] = useState(0);
-  const [highScore, setHighScore] = useState(0); // State to track high score
+  const [highScore, setHighScore] = useState(0); 
   const [soundObject, setSoundObject] = useState(null);
-  const [paused, setPaused] = useState(false); // State to manage pause/unpause
+  const [paused, setPaused] = useState(false);  
   const [musicMuted, setMusicMuted] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [musicPosition, setMusicPosition] = useState(0); // State to store music position
+  const [musicPosition, setMusicPosition] = useState(0);
 
   useEffect(() => {
     setRunning(false);
     prepareSound();
     loadMusicMutedState();
-    loadHighScore(); // Load high score when component mounts
+    loadHighScore(); 
   }, []);
 
   useEffect(() => {
@@ -62,7 +62,6 @@ export default function App() {
   const playSound = async () => {
     try {
       await soundObject.playAsync();
-      // If music was paused, resume from the stored position
       await soundObject.setPositionAsync(musicPosition);
     } catch (error) {
       console.log("Error playing sound: ", error);
@@ -71,7 +70,6 @@ export default function App() {
 
   const stopSound = async () => {
     try {
-      // Store the current position of the music
       const position = await soundObject.getStatusAsync();
       setMusicPosition(position.positionMillis);
       await soundObject.stopAsync();
@@ -88,13 +86,13 @@ export default function App() {
     setRunning(false);
     gameEngine && gameEngine.stop();
     stopSound();
-    setPaused(true); // Set paused state to true when paused
+    setPaused(true);
   };
 
   const handleResume = () => {
-    setRunning(true); // Set running state back to true to resume the game
-    setPaused(false); // Set paused state back to false
-    playSound(); // Resume playing sound
+    setRunning(true);
+    setPaused(false);
+    playSound(); 
   };
 
   const handleExitGame = () => {
@@ -107,20 +105,12 @@ export default function App() {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel",
         },
-        { text: "OK", onPress: () => BackHandler.exitApp() }, // Exit the app when "OK" is pressed
+        { text: "OK", onPress: () => BackHandler.exitApp() }, 
       ],
       { cancelable: false }
     );
   };
 
-  const exitGame = () => {
-    setRunning(false);
-    gameEngine && gameEngine.stop();
-    stopSound();
-    if (!paused) {
-      updateHighScore(); // Update high score when game exits and not paused
-    }
-  };
 
   const toggleSettings = () => {
     setShowSettings(!showSettings);
@@ -201,9 +191,9 @@ export default function App() {
               case "game_over":
                 setRunning(false);
                 gameEngine.stop();
-                stopSound(); // Stop the sound when the game ends
+                stopSound(); 
                 if (!paused) {
-                  updateHighScore(); // Update high score when game ends and not paused
+                  updateHighScore();
                 }
                 break;
               case "new_point":
@@ -213,7 +203,7 @@ export default function App() {
           }}
           style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
         />
-        {!running && !paused ? ( // Render "Start Game" button when the game is not running and not paused
+        {!running && !paused ? ( 
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
@@ -244,7 +234,7 @@ export default function App() {
               <Text style={styles.buttonText}>EXIT GAME</Text>
             </TouchableOpacity>
           </View>
-        ) : !paused ? ( // Render pause button if game is not paused
+        ) : !paused ? ( 
             <TouchableOpacity
               style={styles.pauseButton}
               onPress={handlePause}
@@ -252,7 +242,7 @@ export default function App() {
               <FontAwesome6 name="pause" size={20} color="white" />
             </TouchableOpacity>
         ) : (
-          // Render unpause button if game is paused
+          
             <TouchableOpacity
               style={styles.pauseButton}
               onPress={handleResume}
