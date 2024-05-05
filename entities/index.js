@@ -3,7 +3,7 @@ import Bird from "../components/Bird";
 import Floor from "../components/Floor";
 import Obstacle from "../components/Obstacle";
 import Clouds from "../components/Clouds";
-import { Text, TouchableOpacity, View, ImageBackground, Alert, Switch, Image } from "react-native";
+
 
 
 import { Dimensions } from 'react-native';
